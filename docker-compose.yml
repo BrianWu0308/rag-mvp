@@ -1,0 +1,29 @@
+services:
+  api:
+    # equivalent to "docker build ." using "Dockerfile"
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # Set a fixed name for the container
+    container_name: rag-mvp-api
+
+    # Map port 8000 of the container to port 8000 on the host
+    ports:
+      - "8000:8000"
+
+    # Use an environment file to set environment variables in the container
+    # "Container accesses env_file at runtime", so .env does not need to be copied into the image
+    # That's why .env is in .dockerignore and not copied in the Dockerfile
+    env_file:
+      - .env
+
+    # Mount local directories to the container for uploads and cache
+    # In this case, /app/uploads in the container will be mapped to ./uploads on the host
+    # and /app/cache in the container will be mapped to ./cache on the host
+    volumes:
+      - ./uploads:/app/uploads
+      - ./cache:/app/cache
+
+    # Restart the container unless it is explicitly stopped
+    restart: unless-stopped
