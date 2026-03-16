@@ -207,7 +207,7 @@ def chat_query(request: ChatRequest):
     if not retrieval_results:
         return ChatResponse(
             query=query,
-            answer="我在目前上傳的文件中找不到足夠相關的內容，所以無法可靠回答。",
+            answer="I could not find enough relevant information in the uploaded documents to provide a reliable answer.",
             model=DEFAULT_MODEL,
             total_sources=0,
             sources=[],

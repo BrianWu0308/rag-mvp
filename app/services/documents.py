@@ -64,15 +64,18 @@ def rebuild_document_store_from_uploads() -> dict:
     rebuilt_files = []
     skipped_files = []
 
+    # Process files in sorted order for consistency
     for file_path in sorted(UPLOAD_DIR.glob("*.txt")):
         cached_record = load_cached_document_if_valid(file_path)
 
+        # If we have a valid cached record, use it to populate the DOCUMENT_STORE
         if cached_record is not None:
             DOCUMENT_STORE[file_path.name] = cached_record
             loaded_files.append(file_path.name)
             loaded_from_cache.append(file_path.name)
             continue
-
+        
+        # If no valid cache, we need to read and process the file to rebuild the record
         try:
             text_content = file_path.read_text(encoding="utf-8")
 
@@ -81,7 +84,8 @@ def rebuild_document_store_from_uploads() -> dict:
                 text_content=text_content,
                 save_path=file_path,
             )
-
+            
+            # Update the DOCUMENT_STORE and save the new cache record
             DOCUMENT_STORE[file_path.name] = record
             save_document_cache(record)
 

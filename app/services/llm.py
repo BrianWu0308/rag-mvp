@@ -21,6 +21,9 @@ def build_context(retrieved_chunks: list[dict]) -> str:
 def generate_answer_with_llm(query: str, retrieved_chunks: list[dict]) -> str:
     context_text = build_context(retrieved_chunks)
 
+    # System prompt sets the behavior of the assistant, 
+    # emphasizing reliance on provided context and discouraging use of outside knowledge. 
+    # It also instructs the model to respond in Traditional Chinese.
     system_prompt = (
         "You are a helpful RAG QA assistant. "
         "Answer only based on the provided context. "
@@ -30,6 +33,8 @@ def generate_answer_with_llm(query: str, retrieved_chunks: list[dict]) -> str:
         "Respond in Traditional Chinese."
     )
 
+    # User prompt includes the user's question and the retrieved context,
+    # instructing the model to answer using only that context.
     user_prompt = (
         f"Question:\n{query}\n\n"
         f"Context:\n{context_text}\n\n"
@@ -55,6 +60,6 @@ def generate_answer_with_llm(query: str, retrieved_chunks: list[dict]) -> str:
     answer = response.output_text.strip()
 
     if not answer:
-        return "模型沒有回傳可用文字內容。"
+        return "The model did not return any usable text."
 
     return answer

@@ -7,6 +7,7 @@ CACHE_VERSION = 1
 
 
 def get_cache_path(filename: str) -> Path:
+    # Path(filename).name ensures we only get the filename without path
     safe_name = f"{Path(filename).name}.json"
     return CACHE_DIR / safe_name
 
@@ -59,8 +60,6 @@ def load_cached_document_if_valid(file_path: Path) -> dict | None:
         return None
 
     record = payload.get("record")
-    if not isinstance(record, dict):
-        return None
 
     record["saved_to"] = str(file_path)
     record["filename"] = file_path.name

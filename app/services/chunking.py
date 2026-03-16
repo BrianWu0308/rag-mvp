@@ -11,10 +11,13 @@ def split_text_into_chunks(text: str, chunk_size: int, overlap: int) -> list[dic
     chunks = []
     start = 0
     text_length = len(text)
+
+    # The step size determines how much we move forward for the next chunk,
     step = chunk_size - overlap
     chunk_index = 0
 
     while start < text_length:
+        # Calculate the end index of the current chunk
         end = min(start + chunk_size, text_length)
         chunk_text = text[start:end]
 

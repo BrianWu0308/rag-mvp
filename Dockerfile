@@ -9,8 +9,10 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 COPY app ./app
 
-RUN mkdir -p uploads
+# RUN mkdir -p uploads
+# RUN mkdir -p cache
 
+# Expose the port that the FastAPI app will expect to run on
 EXPOSE 8000
 
 CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
